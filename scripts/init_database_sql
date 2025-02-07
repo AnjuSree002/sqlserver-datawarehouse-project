@@ -1,4 +1,14 @@
+/*
+--------------CREATE DATABASE AND SCHEMAS -----------------------
 
+SCRIPT PURPOSE:
+	This scripts creates database after checking if the databse already exists, 
+	if it exists then db is dropped and new db is created and schemas are created.
+
+CAUTION:
+	Running this script deletes the entire db along 
+	
+*/
 USE master;
 Go
 
@@ -6,7 +16,7 @@ Go
 
 IF EXISTS (Select 1 from sys.databases where name = 'datawarehouse')
 	BEGIN
-		ALTER database datawarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+		ALTER database datawarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE; ---set forcebly disconnects all other users and rollbacks their transactions and only one user can access db
 		DROP database datawarehouse;
 		print 'DATABASE - datawarehouse dropped';
 	END;

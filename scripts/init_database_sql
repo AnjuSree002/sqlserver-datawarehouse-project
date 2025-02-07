@@ -1,0 +1,38 @@
+
+USE master;
+Go
+
+-------Check if 'datawarehouse' db exist, drop and recreate the db-----------
+
+IF EXISTS (Select 1 from sys.databases where name = 'datawarehouse')
+	BEGIN
+		ALTER database datawarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+		DROP database datawarehouse;
+		print 'DATABASE - datawarehouse dropped';
+	END;
+GO
+
+--------CREATE database datawarehouse--------------
+CREATE DATABASE datawarehouse;
+print 'DATABASE - datwarehouse created successfully';
+GO
+
+--------CREATE SCHEMAS-----------
+USE datawarehouse;
+GO
+
+
+CREATE SCHEMA bronze;
+GO
+PRINT 'Schema- bronze created successfully';
+GO
+
+CREATE SCHEMA silver;
+GO
+PRINT 'Schema- silver created successfully';
+GO
+
+CREATE SCHEMA gold;
+GO
+PRINT 'Schema- gold created successfully';
+GO

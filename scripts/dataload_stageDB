@@ -1,0 +1,134 @@
+
+EXEC bronze.load_bronze;
+
+
+--EXEC sp_help 'bronze.crm_cust_info';
+---------------create a stored procedure ------------------------
+
+CREATE or ALTER PROCEDURE bronze.load_bronze AS
+
+BEGIN
+	DECLARE @start_time DATETIME, @end_time DATETIME;
+	BEGIN TRY
+
+	-------------Truncate crm_cust_info data and bulk insert------------------
+
+	
+		SET @start_time = GETDATE();
+		
+		TRUNCATE TABLE bronze.crm_cust_info;
+	
+		PRINT'----------------------------------------------------------'
+		PRINT'Loading CRM tables'
+		PRINT'----------------------------------------------------------'
+
+
+		BULK INSERT bronze.crm_cust_info
+		FROM 'E:\PROJECT\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
+		WITH(
+			FIRSTROW = 2,
+			FIELDTERMINATOR = ',', 
+			rowterminator= '\n'
+	
+		);
+		
+		SET @end_time = GETDATE();
+		
+		print 'Load duration for crm_cust_info table : ' + cast(datediff(second, @start_time , @end_time) as varchar) +' seconds'
+		print 'executed';
+		-------------Truncate crm_prd_info data and bulk insert------------------
+
+		SET @start_time = GETDATE();
+		
+		TRUNCATE TABLE bronze.crm_prd_info;
+
+		BULK INSERT bronze.crm_prd_info
+		FROM 'E:\PROJECT\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
+		WITH(
+			FIRSTROW = 2,
+			FIELDTERMINATOR = ',', 
+			rowterminator= '\n'
+	
+		);
+		
+		SET @end_time = GETDATE();
+		print 'Load duration for crm_prd_info table : ' + cast(datediff(second, @start_time , @end_time) as varchar) +' seconds'
+
+		-------------Truncate crm_sales_details data and bulk insert------------------
+
+		SET @start_time = GETDATE();
+		TRUNCATE TABLE bronze.crm_sales_details;
+
+		BULK INSERT bronze.crm_sales_details
+		FROM 'E:\PROJECT\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
+		WITH(
+			FIRSTROW = 2,
+			FIELDTERMINATOR = ',', 
+			rowterminator= '\n'
+	
+		);
+		
+		print 'Load duration for crm_sales_details table : ' + cast(datediff(second, @start_time , @end_time) as varchar) +' seconds'
+		SET @end_time = GETDATE();
+
+		-------------Truncate erp_cust_az12 data and bulk insert------------------
+
+		PRINT'----------------------------------------------------------'
+		PRINT'Loading ERP tables'
+		PRINT'----------------------------------------------------------'
+		
+		SET @start_time = GETDATE();
+		TRUNCATE TABLE bronze.erp_cust_az12;
+
+		BULK INSERT bronze.erp_cust_az12
+		FROM 'E:\PROJECT\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
+		WITH(
+			FIRSTROW = 2,
+			FIELDTERMINATOR = ',', 
+			rowterminator= '\n'
+	
+		);
+		SET @end_time = GETDATE();
+		print 'Load duration for erp_cust_az12 table : ' + cast(datediff(second, @start_time , @end_time) as varchar) +' seconds'
+
+
+		-------------Truncate erp_cust_az12 data and bulk insert------------------
+		
+		SET @start_time = GETDATE();
+		TRUNCATE TABLE bronze.erp_loc_a101;
+
+		BULK INSERT bronze.erp_loc_a101
+		FROM 'E:\PROJECT\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
+		WITH(
+			FIRSTROW = 2,
+			FIELDTERMINATOR = ',', 
+			rowterminator= '\n'
+	
+		);
+		SET @end_time = GETDATE();
+		print 'Load duration for erp_loc_a101 table : ' + cast(datediff(second, @start_time , @end_time) as varchar) +' seconds'
+
+
+		-------------Truncate erp_cust_az12 data and bulk insert------------------
+
+		SET @start_time = GETDATE();
+		TRUNCATE TABLE bronze.erp_cat_g1v2;
+
+		BULK INSERT bronze.erp_cat_g1v2
+		FROM 'E:\PROJECT\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
+		WITH(
+			FIRSTROW = 2,
+			FIELDTERMINATOR = ',', 
+			rowterminator= '\n'
+	
+		);
+		SET @end_time = GETDATE();
+		print 'Load duration for erp_loc_a101 table : ' + cast(datediff(second, @start_time , @end_time) as varchar) +' seconds'
+
+END TRY
+BEGIN CATCH
+	RAISERROR( 'executed', 0,1) with nowait;
+	print 'Error while loading data:'+ error_message() ;
+
+END CATCH
+END

@@ -1,0 +1,46 @@
+/*
+--------------CREATE DATABASE AND SCHEMAS -----------------------
+
+SCRIPT PURPOSE:
+	This scripts creates database after checking if the databse already exists, 
+	if it exists then db is dropped and new db is created and schemas are created.
+
+CAUTION:
+	Running this script deletes the entire db along 
+	
+*/
+USE master;
+Go
+
+-------Check if 'sales_dw' db exist, drop and recreate the db-----------
+
+IF EXISTS (Select 1 from sys.databases where name = 'sales_dw')
+	BEGIN
+		ALTER database sales_dw SET SINGLE_USER WITH ROLLBACK IMMEDIATE; ---set forcebly disconnects all other users and rollbacks their transactions and only one user can access db
+		DROP database sales_dw;
+		print 'DATABASE - sales_dw dropped';
+	END;
+GO
+
+--------CREATE database sales_dw--------------
+CREATE DATABASE sales_dw;
+print 'DATABASE - sales_dw created successfully';
+GO
+
+--------CREATE SCHEMAS-----------
+USE sales_dw;
+GO
+
+
+
+/*------------ Schema- bronze ---------------*/
+EXEC('create schema bronze');
+print 'Schema - bronze is created successfully';
+
+/*------------ Schema- silver ---------------*/
+EXEC('create schema silver');
+print 'Schema - silver is created successfully';
+
+/*------------ Schema- gold ---------------*/
+EXEC('create schema gold');
+print 'Schema - gold is created successfully'

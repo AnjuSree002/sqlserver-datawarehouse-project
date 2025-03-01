@@ -1,0 +1,126 @@
+
+/*======================================================
+  create CRM  tables
+ ======================================================*/
+
+
+if not exists (select 1 from sys.tables where name='crm_cust_info') 
+BEGIN
+	CREATE TABLE bronze.crm_cust_info(
+		cst_id VARCHAR(30),
+		cst_key VARCHAR(30),
+		cst_firstname VARCHAR(30),
+		cst_lastname VARCHAR(30),
+		cst_marital_status VARCHAR(30),
+		cst_gndr VARCHAR(30),
+		cst_create_date date
+	)
+	print('==============================================')
+	print('crm_cust_info table created successfully')
+	print('==============================================')
+END;
+ELSE
+	print('==============================================')
+	print ('Table crm_cust_info already exists')
+	print('==============================================')
+
+
+if not exists (select 1 from sys.tables where name='crm_cust_info') 
+BEGIN
+	CREATE TABLE bronze.crm_prd_info(
+		prd_id VARCHAR(30),
+		prd_key VARCHAR(30),
+		prd_nm VARCHAR(30),
+		prd_cost VARCHAR(30),
+		prd_line VARCHAR(30),
+		prd_start_dt DATE,
+		prd_end_dt DATE
+	)
+	print('==============================================')
+	print ('Table crm_prd_info created successfully')
+	print('==============================================')
+END;
+else
+	print('==============================================')
+	print ('Table crm_prd_info already exists')
+	print('==============================================')
+
+if not exists (select 1 from sys.tables where name = 'crm_sales_details')
+begin
+	CREATE TABLE bronze.crm_sales_details(
+		sls_ord_num VARCHAR(30),
+		sls_prd_key VARCHAR(30),
+		sls_cust_id VARCHAR(30),
+		sls_order_dt date,
+		sls_ship_dt date,
+		sls_due_dt date,
+		sls_sales VARCHAR(30),
+		sls_quantity INT,
+		sls_price INT
+	)
+	print('==============================================')
+	print ('Table crm_sales_details created successfully')
+	print('==============================================')
+
+end;
+ELSE
+	print('==============================================')
+	print ('Table crm_sales_details already exists')
+	print('==============================================')
+
+/*======================================================
+  create ERP tables
+ ======================================================*/
+
+if not exists (select 1 from sys.tables where name = 'erp_cust_az12')
+begin
+	CREATE TABLE bronze.erp_cust_az12(
+		CID varchar(30),
+		BDATE date,
+		GEN VARCHAR(30)
+	)
+	print('==============================================')
+	print ('Table erp_cust_az12 created successfully')
+	print('==============================================')
+end;
+else
+	print('==============================================')
+	print ('Table erp_cust_az12 already exists')
+	print('==============================================')
+
+
+if not exists (select 1 from sys.tables where name = 'erp_loc_a101')
+begin
+	CREATE TABLE bronze.erp_loc_a101(
+		CID varchar(30),
+		COUNTRY varchar(20)
+	)
+	
+	print('==============================================')
+	print ('Table erp_loc_a101 created successfully')
+	print('==============================================')
+
+end;
+else
+	print('==============================================')
+	print ('Table erp_loc_a101 already exists')
+	print('==============================================')
+
+if not exists (select 1 from sys.tables where name = 'erp_px_cat_g1v2')
+begin
+	CREATE TABLE bronze.erp_px_cat_g1v2(
+		ID varchar(30),
+		CAT varchar(20),
+		SUBCAT varchar(20),
+		MAINTENANCE varchar(30)
+	)
+	print('==============================================')
+	print ('Table erp_px_cat_g1v2 created successfully')
+	print('==============================================')
+
+end;
+else 
+	print('==============================================')
+	print ('Table erp_px_cat_g1v2 already exists')
+	print('==============================================')
+
